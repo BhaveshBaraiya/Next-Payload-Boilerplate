@@ -209,6 +209,8 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
+  parent?: (number | null) | Page;
+  fullPath?: string | null;
   layout?:
     | (
         | {
@@ -453,6 +455,8 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  parent?: T;
+  fullPath?: T;
   layout?:
     | T
     | {
@@ -564,6 +568,13 @@ export interface Header {
           } | null;
           url?: string | null;
         };
+        dropdownItems?:
+          | {
+              label: string;
+              page: number | Page;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -597,17 +608,25 @@ export interface SiteSetting {
  */
 export interface Footer {
   id: number;
-  copyright?: string | null;
+  brandMessage?: string | null;
   navItems?:
     | {
         label: string;
-        /**
-         * E.g., /privacy-policy or https://google.com
-         */
         url: string;
         id?: string | null;
       }[]
     | null;
+  socialLinks?:
+    | {
+        /**
+         * e.g., LinkedIn, Twitter
+         */
+        platform: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  copyright?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -626,6 +645,13 @@ export interface HeaderSelect<T extends boolean = true> {
               label?: T;
               reference?: T;
               url?: T;
+            };
+        dropdownItems?:
+          | T
+          | {
+              label?: T;
+              page?: T;
+              id?: T;
             };
         id?: T;
       };
@@ -660,7 +686,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  copyright?: T;
+  brandMessage?: T;
   navItems?:
     | T
     | {
@@ -668,6 +694,14 @@ export interface FooterSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  copyright?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://t3universe.de'
+  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://next-payload-boilerplate.vercel.app/'
 
   return {
     rules: {

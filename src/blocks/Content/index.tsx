@@ -13,6 +13,13 @@ export function ContentBlock({ body }: { body: any }) {
             data={body} 
             converters={({ defaultConverters }) => ({
               ...defaultConverters,            
+              // FIX: We render a <div> instead of a <p> tag to prevent nesting errors.
+              // We do not use DefaultElement to avoid the ReferenceError.
+              paragraph: ({ node, nodesToJSX }) => (
+                <div className="my-4">
+                  {nodesToJSX({ nodes: node.children })}
+                </div>
+              ),
               upload: ({ node }) => {                
                 if (node.relationTo === 'media') {
                   return (

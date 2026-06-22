@@ -26,7 +26,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
         <div className="my-10 w-full rounded-2xl overflow-hidden border border-neutral-800 shadow-2xl bg-neutral-900">
           <Image 
             src={uploadDoc.url} 
-            alt={uploadDoc.alt || 'T3Universe Media'} 
+            alt={uploadDoc.alt || 'NextPayload Media'} 
             width={uploadDoc.width || 1200} 
             height={uploadDoc.height || 800} 
             className="w-full h-auto object-cover transition-transform duration-700 hover:scale-105" 

@@ -19,8 +19,20 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  routes: {
+    admin: '/admin',
+  },
   admin: {
-    user: Users.slug,
+    meta: {
+      titleSuffix: '– CMS Dashboard',      
+    },
+    user: Users.slug,    
+    components: {      
+      graphics: {
+        Logo: '@/components/Admin/CustomLogo',
+        Icon: '@/components/Admin/CustomLogo',
+      },
+    }
   },
   sharp,
   collections: [
@@ -29,12 +41,10 @@ export default buildConfig({
     Pages,
     Leads,
   ],
-  plugins: [
+  plugins: [    
     vercelBlobStorage({
       enabled: true,
-      collections: {        
-        media: true, 
-      },
+      collections: { media: true },
       token: process.env.BLOB_READ_WRITE_TOKEN,
       clientUploads: true,
     }),

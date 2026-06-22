@@ -10,3 +10,19 @@
     /* 'antialiased' makes text rendering sharper on Mac/iOS devices */
   }
 }
+
+/* Force the browser to render these elements as blocks, 
+   ignoring the fact that they are inside a <p> tag */
+.payload-richtext h3, 
+.payload-richtext h4, 
+.payload-richtext ul {
+  display: block !important;
+  margin: 1em 0 !important;
+}
+
+/* Hide the illegal <p> tag that Lexical is injecting */
+.payload-richtext > p:has(h3), 
+.payload-richtext > p:has(h4),
+.payload-richtext > p:has(ul) {
+  display: contents !important; /* This effectively makes the <p> invisible to the DOM */
+}

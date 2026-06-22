@@ -6,7 +6,7 @@ export const Header: GlobalConfig = {
     read: () => true, 
   },
   admin: {
-    // SECURED: Hides the Header settings from non-admins
+    group: 'SYSTEM',
     hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
@@ -39,20 +39,29 @@ export const Header: GlobalConfig = {
               name: 'reference',
               label: 'Page to link to',
               type: 'relationship',
-              relationTo: ['pages'],
-              required: true,
-              admin: {
-                condition: (_, siblingData) => siblingData?.type === 'reference',
-              },
+              relationTo: ['pages'],              
+              admin: { condition: (_, siblingData) => siblingData?.type === 'reference' },
             },
             {
               name: 'url',
               label: 'Custom URL',
               type: 'text',
               required: true,
-              admin: {
-                condition: (_, siblingData) => siblingData?.type === 'custom',
-              },
+              admin: { condition: (_, siblingData) => siblingData?.type === 'custom' },
+            },
+          ],
+        },        
+        {
+          name: 'dropdownItems',
+          type: 'array',
+          label: 'Dropdown Sub-links (Optional)',
+          fields: [
+            { name: 'label', type: 'text', required: true },    
+            {
+              name: 'page',
+              type: 'relationship',
+              relationTo: 'pages',
+              required: true,
             },
           ],
         },

@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   })
 
   // Use your production URL, fallback to localhost for development
-  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://t3universe.de'
+  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://next-payload-boilerplate.vercel.app/'
 
   // Map the Payload pages to the Next.js Sitemap format
   const sitemapEntries: MetadataRoute.Sitemap = pages.map((page) => ({

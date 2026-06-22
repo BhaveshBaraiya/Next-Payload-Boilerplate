@@ -23,7 +23,7 @@ export default function NotFound() {
           
           {/* The Description */}
           <p className="text-neutral-500 font-light max-w-md mx-auto text-sm md:text-base leading-relaxed">
-            The page you are looking for has been pulled beyond the event horizon. It may have been moved, deleted, or never existed in this universe.
+            The page you are looking for has been pulled beyond the event horizon. It may have been moved, deleted, or never existed.
           </p>
         </div>
         

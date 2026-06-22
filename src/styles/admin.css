@@ -1,0 +1,55 @@
+/* src/styles/admin.css */
+
+/* --- 1. OVERRIDE THE SIDEBAR LAYOUT --- */
+/* Widen the sidebar so the logo and collections have room to breathe */
+.nav {
+  width: 280px !important; 
+  background-color: #020202 !important;
+  border-right: 1px solid #1a1a1a !important;
+  padding-top: 1rem !important;
+}
+
+/* --- 2. OVERRIDE THE MAIN DASHBOARD LAYOUT --- */
+/* Push the dark aesthetic into the deepest layers of the UI */
+body, 
+html, 
+#app, 
+.template-default {
+  background-color: #050505 !important;
+}
+
+/* The top breadcrumb header area */
+.app-header {
+  background-color: transparent !important;
+  border-bottom: 1px solid #1a1a1a !important;
+}
+
+/* The actual content area where you edit pages */
+.template-default__main {
+  background-color: #050505 !important;
+  padding: 3rem !important; /* Give the editing area more breathing room */
+}
+
+/* --- 3. PREMIUM UI ELEMENTS --- */
+/* Convert blocky buttons into sleek pills */
+.btn--style-primary {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-radius: 9999px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn--style-primary:hover {
+  background-color: #cccccc !important;
+  transform: translateY(-1px);
+}
+
+/* Smooth out the input fields */
+input, textarea, .field-type {
+  border-radius: 8px !important;
+  border-color: #1a1a1a !important;
+  background-color: #0a0a0a !important;
+}

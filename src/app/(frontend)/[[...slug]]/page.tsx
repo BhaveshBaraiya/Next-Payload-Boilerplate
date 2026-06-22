@@ -16,32 +16,31 @@ type Args = {
 // NEW: Phase 12 - Dynamic SEO Metadata Generator
 // ============================================================================
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
-  const resolvedParams = await params
-  const slug = resolvedParams.slug ? resolvedParams.slug.join('/') : 'home'
+ const resolvedParams = await params
+  // Create the full path string (e.g., '/about/our-mission')
+  const path = resolvedParams.slug ? `/${resolvedParams.slug.join('/')}` : '/'
 
   const payload = await getPayload({ config: configPromise })
 
   const { docs } = await payload.find({
     collection: 'pages',
-    where: { slug: { equals: slug } },
+    where: {
+      // Use the same 'fullPath' logic as your DynamicPage component
+      fullPath: { equals: path.replace(/^\//, '') } 
+    },
     limit: 1,
   })
 
   const page = docs[0]
 
-  // Fallback if no page is found
   if (!page) {
     return { title: 'Page Not Found' }
   }
-
-  // Extract the meta object we built in Phase 5
   const meta = page.meta || {}
 
-  // Next.js automatically maps this object to standard HTML tags and Open Graph tags
   return {
-    title: meta.title || page.title, // Fallback to the page name if the client forgot to write an SEO title
-    description: meta.description || 'A premium digital experience.',
-    // If we have an image, pass its URL for Twitter/LinkedIn link previews
+    title: meta.title || page.title,
+    description: meta.description || 'A premium digital experience.',    
     openGraph: {
       title: meta.title || page.title,
       description: meta.description || '',
@@ -59,32 +58,23 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
 // EXISTING: Visual Page Renderer
 // ============================================================================
 export default async function DynamicPage({ params }: Args) {
-  const resolvedParams = await params
-  const slug = resolvedParams.slug ? resolvedParams.slug.join('/') : 'home'
+  const resolvedParams = await params;
+  const slugArray = resolvedParams.slug || ['home'];
+  const currentSlug = slugArray[slugArray.length - 1];
 
-  const { isEnabled: isDraftMode } = await draftMode()
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise });
 
+  // Simply find the page by its slug
   const { docs } = await payload.find({
     collection: 'pages',
-    where: { slug: { equals: slug } },
+    where: { 
+      slug: { equals: currentSlug } 
+    },
     limit: 1,
-    draft: isDraftMode,
-    overrideAccess: isDraftMode, 
-  })
+  });
 
-  const page = docs[0]
+  const page = docs[0];
+  if (!page) return notFound();
 
-  if (!page) return notFound()
-
-  return (
-    <main className="min-h-screen relative">
-      {isDraftMode && (
-        <div className="fixed bottom-4 right-4 z-50 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white shadow-lg">
-          ⚠️ Draft Mode Active
-        </div>
-      )}
-      <RenderBlocks layout={page.layout || []} />
-    </main>
-  )
+  return <RenderBlocks layout={page.layout || []} />;
 }

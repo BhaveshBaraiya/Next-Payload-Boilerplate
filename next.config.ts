@@ -8,9 +8,18 @@ const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
   images: {
+    // Keep your existing local patterns for dev mode
     localPatterns: [
       {
         pathname: '/api/media/file/**',
+      },
+    ],
+    // ADD THIS: The Vercel Blob VIP list for production
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+        port: '',
       },
     ],
   },

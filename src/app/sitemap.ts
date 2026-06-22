@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
-// 1 folder up from 'app' to reach 'src/payload.config.ts'
+export const dynamic = 'force-dynamic' // <--- ADD THIS LINE
 import configPromise from '../payload.config' 
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

@@ -13,29 +13,32 @@ type Args = {
 }
 
 // ============================================================================
-// NEW: Phase 12 - Dynamic SEO Metadata Generator
+// Dynamic SEO Metadata Generator
 // ============================================================================
 export async function generateMetadata({ params }: Args): Promise<Metadata> {
- const resolvedParams = await params
-  // Create the full path string (e.g., '/about/our-mission')
+  const resolvedParams = await params  
   const path = resolvedParams.slug ? `/${resolvedParams.slug.join('/')}` : '/'
+  const lastSlug = resolvedParams.slug ? resolvedParams.slug[resolvedParams.slug.length - 1] : 'home'
 
   const payload = await getPayload({ config: configPromise })
 
   const { docs } = await payload.find({
     collection: 'pages',
     where: {
-      // Use the same 'fullPath' logic as your DynamicPage component
-      fullPath: { equals: path.replace(/^\//, '') } 
+      or: [
+        { 'fullPath': { equals: path.replace(/^\//, '') } }, 
+        { 'slug': { equals: lastSlug } }                
+      ]
     },
     limit: 1,
   })
 
   const page = docs[0]
-
+  
   if (!page) {
     return { title: 'Page Not Found' }
   }
+
   const meta = page.meta || {}
 
   return {

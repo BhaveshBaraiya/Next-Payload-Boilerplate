@@ -9,18 +9,17 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
-    // REMOVED the 'hidden' rule so clients can see the Pages tab
     preview: (doc) => {
       if (!doc?.slug) return null
+      const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
       const url = doc.slug === 'home' ? '/' : `/${doc.slug}`
-      return `http://localhost:3000/api/draft?url=${url}&slug=${doc.slug}&secret=${process.env.PAYLOAD_SECRET}`
+      return `${baseUrl}/api/draft?url=${url}&slug=${doc.slug}&secret=${process.env.PAYLOAD_SECRET}`
     },
   },
   versions: {
     drafts: true,
   },
-  access: {
-    // Anyone on the internet can read published pages
+  access: {    
     read: ({ req: { user } }) => {
       if (user) return true
       return {
@@ -28,8 +27,7 @@ export const Pages: CollectionConfig = {
           equals: 'published',
         },
       }
-    },
-    // ALLOW logged-in clients to create, edit, and delete pages
+    },    
     create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => Boolean(user),

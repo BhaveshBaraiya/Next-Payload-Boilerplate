@@ -3,18 +3,16 @@ import type { CollectionConfig } from 'payload'
 export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
-    useAsTitle: 'alt',
-    // REMOVED 'hidden' rule so clients can see the Media tab
+    useAsTitle: 'alt',    
   },
-  access: {
-    // Public can view images
+  access: {    
     read: () => true,
-    // Clients can upload, edit, and delete images
     create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => Boolean(user),
   },
   upload: {
+    disableLocalStorage: true,
     staticDir: 'media',
     imageSizes: [
       {

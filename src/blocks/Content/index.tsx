@@ -11,13 +11,20 @@ export function ContentBlock({ body }: { body: any }) {
         <div className="prose prose-lg prose-slate mx-auto">
           <RichText 
             data={body} 
-            converters={{
-              // This tells the rich text renderer: 
-              // "When you see an image, use our optimized AgencyImage component"
-              uploadedImage: ({ node }) => (
-                <AgencyImage image={node.value} className="rounded-2xl shadow-xl my-8" />
-              ),
-            }}
+            converters={({ defaultConverters }) => ({
+              ...defaultConverters,            
+              upload: ({ node }) => {                
+                if (node.relationTo === 'media') {
+                  return (
+                    <AgencyImage 
+                      image={node.value} 
+                      className="rounded-2xl shadow-xl my-8 w-full object-cover" 
+                    />
+                  )
+                }
+                return null
+              },
+            })}
           />
         </div>
       </div>

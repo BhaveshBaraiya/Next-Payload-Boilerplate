@@ -3,14 +3,18 @@ import type { GlobalConfig } from 'payload'
 export const Header: GlobalConfig = {
   slug: 'header',
   access: {
-    read: () => true, // Publicly readable by the frontend
+    read: () => true, 
+  },
+  admin: {
+    // SECURED: Hides the Header settings from non-admins
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {
       name: 'navItems',
       type: 'array',
       label: 'Navigation Links',
-      maxRows: 6, // Keep the UI clean, don't let clients add 50 links to a header
+      maxRows: 6, 
       fields: [
         {
           name: 'link',
@@ -31,7 +35,6 @@ export const Header: GlobalConfig = {
               type: 'text',
               required: true,
             },
-            // Show this field ONLY if they choose "Internal Page"
             {
               name: 'reference',
               label: 'Page to link to',
@@ -42,7 +45,6 @@ export const Header: GlobalConfig = {
                 condition: (_, siblingData) => siblingData?.type === 'reference',
               },
             },
-            // Show this field ONLY if they choose "Custom URL"
             {
               name: 'url',
               label: 'Custom URL',

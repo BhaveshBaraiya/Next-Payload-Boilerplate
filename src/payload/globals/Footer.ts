@@ -3,7 +3,11 @@ import type { GlobalConfig } from 'payload'
 export const Footer: GlobalConfig = {
   slug: 'footer',
   access: {
-    read: () => true, // Publicly accessible
+    read: () => true, 
+  },
+  admin: {
+    // SECURED: Hides the Footer settings from non-admins
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {

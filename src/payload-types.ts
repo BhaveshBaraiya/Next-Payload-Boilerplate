@@ -135,6 +135,8 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  role: 'admin' | 'editor' | 'client';
+  companyName?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -160,9 +162,6 @@ export interface User {
  */
 export interface Media {
   id: number;
-  /**
-   * Describe the image for search engines and screen readers.
-   */
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -175,6 +174,32 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    tablet?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -255,10 +280,11 @@ export interface Lead {
   name: string;
   email: string;
   message: string;
-  /**
-   * The page URL where this form was submitted from.
-   */
   source?: string | null;
+  /**
+   * Assign this lead to a client so they can view it in their portal.
+   */
+  assignedClient?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -349,6 +375,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
+  companyName?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -383,6 +411,40 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        tablet?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -441,6 +503,7 @@ export interface LeadsSelect<T extends boolean = true> {
   email?: T;
   message?: T;
   source?: T;
+  assignedClient?: T;
   updatedAt?: T;
   createdAt?: T;
 }

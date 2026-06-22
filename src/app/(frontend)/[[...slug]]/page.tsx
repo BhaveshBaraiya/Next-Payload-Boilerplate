@@ -84,7 +84,7 @@ export default async function DynamicPage({ params }: Args) {
           ⚠️ Draft Mode Active
         </div>
       )}
-      <RenderBlocks layout={page.layout} />
+      <RenderBlocks layout={page.layout || []} />
     </main>
   )
 }

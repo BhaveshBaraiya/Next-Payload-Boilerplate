@@ -2,22 +2,48 @@ import type { CollectionConfig } from 'payload'
 
 export const Media: CollectionConfig = {
   slug: 'media',
-  // Access control: Anyone visiting the site must be able to view images,
-  // but only admins can upload or delete them.
-  access: {
-    read: () => true,
+  admin: {
+    useAsTitle: 'alt',
+    // REMOVED 'hidden' rule so clients can see the Media tab
   },
-  // Enabling 'upload' transforms this from a standard data table into a file manager
-  upload: true, 
+  access: {
+    // Public can view images
+    read: () => true,
+    // Clients can upload, edit, and delete images
+    create: ({ req: { user } }) => Boolean(user),
+    update: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => Boolean(user),
+  },
+  upload: {
+    staticDir: 'media',
+    imageSizes: [
+      {
+        name: 'thumbnail',
+        width: 400,
+        height: 300,
+        position: 'centre',
+      },
+      {
+        name: 'card',
+        width: 768,
+        height: 1024,
+        position: 'centre',
+      },
+      {
+        name: 'tablet',
+        width: 1024,
+        height: undefined,
+        position: 'centre',
+      },
+    ],
+    adminThumbnail: 'thumbnail',
+    mimeTypes: ['image/*'],
+  },
   fields: [
     {
       name: 'alt',
       type: 'text',
       required: true,
-      label: 'SEO Alternative Text',
-      admin: {
-        description: 'Describe the image for search engines and screen readers.',
-      },
     },
   ],
 }
